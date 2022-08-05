@@ -400,6 +400,8 @@ def to_instance_dicts(schema, fetches):
   batch_sizes = {}
   feature_spec = schema_utils.schema_as_feature_spec(schema).feature_spec
   for name, tensor_or_value in fetches.items():
+    if name not in feature_spec:
+        raise ValueError(f"Name is {name}. Feature spec is {feature_spec}")
     spec = feature_spec[name]
     if isinstance(spec, tf.io.FixedLenFeature):
       value = np.asarray(tensor_or_value)
